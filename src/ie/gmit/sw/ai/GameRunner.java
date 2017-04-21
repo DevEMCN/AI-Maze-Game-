@@ -22,7 +22,9 @@ public class GameRunner implements KeyListener{
 	private Player player;
 	private FuzzySprite fsprite;
 	private NeuralSprite nsprite;
-	
+	private JLayeredPane lpane = new JLayeredPane();
+    private JPanel panel = new JPanel();
+    private JPanel panelEnd = new JPanel();	
 	JLabel healthBar;
 	
 	public GameRunner() throws Exception{
@@ -42,9 +44,6 @@ public class GameRunner implements KeyListener{
     	view.setPreferredSize(d);
     	view.setMinimumSize(d);
     	view.setMaximumSize(d);
-    	
-    	
-    	JPanel panel = new JPanel();
         healthBar = new JLabel("Healh Status: " + player.getHealth());
         panel.add(healthBar);
         	
@@ -56,11 +55,16 @@ public class GameRunner implements KeyListener{
         f.add(view);
         f.setSize(1000,1000);
         f.setLocation(100,100);
-        f.pack();
         f.setVisible(true);
+        endGame();
 	}
         
-        
+        private void endGame(){
+        	panelEnd.setBackground(Color.BLUE);
+            panelEnd.setBounds(0, 0, 600, 400);
+            panelEnd.setOpaque(true);
+            lpane.add(panelEnd, new Integer(0), 0);
+        }
 	
 	private void placePlayer(){   	
 //    	currentRow = (int) (MAZE_DIMENSION * Math.random());
@@ -110,7 +114,8 @@ public class GameRunner implements KeyListener{
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0032')){
 			model.getMaze()[row][col].setNodeType('0');
-			//model.set(currentRow, currentCol, '0');
+			player.setHealth(player.getHealth()+25);
+			healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0033')){

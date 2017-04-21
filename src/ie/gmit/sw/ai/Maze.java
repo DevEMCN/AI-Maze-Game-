@@ -27,7 +27,7 @@ public class Maze {
 		init();
 		buildMaze();
 		
-		int featureNumber = 0;
+		int featureNumber = 20;
 		addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
 		addFeature('\u0032', '0', featureNumber); //2 is help, 0 is a hedge
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
