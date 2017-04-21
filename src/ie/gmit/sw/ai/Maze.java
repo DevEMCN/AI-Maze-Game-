@@ -16,7 +16,7 @@ public class Maze {
 	private List<FuzzySprite> fsprites = new ArrayList<>();	
 	private List<NeuralSprite> nsprites = new ArrayList<>();
 	
-	private ExecutorService ex = Executors.newFixedThreadPool(100);
+	private ExecutorService ex = Executors.newCachedThreadPool();
 	
 	
 	public Maze(int dimension, Player player){
@@ -33,8 +33,8 @@ public class Maze {
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
 		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge
 //		
-		featureNumber = 2;//(int)((dimension * dimension) * 0.01);
-//		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
+		featureNumber = 20;//(int)((dimension * dimension) * 0.01);
+		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
 		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
 //		addFeature('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
 //		addFeature('\u0039', '0', featureNumber); //9 is a Green Spider, 0 is a hedge
@@ -77,6 +77,7 @@ public class Maze {
 						ex.execute(fsprite);
 					}
 					else if(number > 1 && maze[row][col].getNodeType() == '\u0037'){
+						System.out.println("called");
 						NeuralSprite nsprite = new NeuralSprite(maze, player, row, col, 25, counter);
 						nsprites.add(nsprite);
 						ex.execute(nsprite);

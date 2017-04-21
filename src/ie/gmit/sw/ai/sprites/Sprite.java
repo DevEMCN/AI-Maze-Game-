@@ -10,6 +10,8 @@ public abstract class Sprite {
  	private int row;
  	private int col;
  
+
+ 	
  	public Sprite(){
  		
  	}

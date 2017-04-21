@@ -129,8 +129,10 @@ public class GameRunner implements KeyListener{
 			fsprite.engageFuzzy();
 			if(player.getHealth() > 0){
 				fsprite.setId(-1);
+				System.out.println("sprite id game runner: " + fsprite.getId());
 				model.set(currentRow, currentCol, '\u0020');
 				model.set(row, col, '\u0020');
+				//Thread.currentThread().interrupt();
 				healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
 			}
 			else{

@@ -2,7 +2,8 @@ package ie.gmit.sw.ai.traversers;
 
 import ie.gmit.sw.ai.*;
 import ie.gmit.sw.ai.sprites.FuzzySprite;
-import ie.gmit.sw.ai.sprites.Sprite;
+
+
 public class DepthLimitedDFSTraversator implements Traversator{
 	private Node[][] maze;
 	private int limit;
@@ -56,19 +57,22 @@ public class DepthLimitedDFSTraversator implements Traversator{
 			if (children[i] != null && !children[i].isVisited()){
 				children[i].setParent(node);
 				try {
-					//System.out.println("prev: " + previousNode.getRow() + " " + previousNode.getCol());
-					//System.out.println("new: " + node.getRow() + " " + node.getCol());
-					if(sprite.getId() != -1){
-						System.out.println(sprite.getId());
-					sprite.moveSprite(node.getRow(), node.getCol());
+					if(node.getNodeType() != '0'){
+						if(sprite.getId() != -1){
+							System.out.println("sprite id = " + sprite.getId());
+							sprite.moveSprite(node.getRow(), node.getCol());
+						}
+						else
+							Thread.currentThread().stop();
+							break;
 					}
-					else
-						break;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 				dfs(children[i], depth + 1);
+				
 			}
 		}
 	}

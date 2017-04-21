@@ -1,24 +1,33 @@
 package ie.gmit.sw.ai.traversers;
 
-import ie.gmit.sw.ai.*;
-import ie.gmit.sw.ai.sprites.FuzzySprite;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 
-import java.util.*;
+import ie.gmit.sw.ai.Node;
+import ie.gmit.sw.ai.sprites.NeuralSprite;
+
 public class AStarTraversator implements Traversator{
-	private Node goal;
-	private FuzzySprite sprite;
+	private Node goal; 
+	private LinkedList<Node> path = null;
+	private List<Node> fullPath = null;
 	
-	public AStarTraversator(Node goal, FuzzySprite sprite){
+	private NeuralSprite nsprite;
+	
+	public AStarTraversator(Node goal, NeuralSprite sprite){
+		this.nsprite = sprite;
 		this.goal = goal;
-		this.sprite = sprite;
 	}
 	
 	public void traverse(Node[][] maze, Node node) {
+		
         long time = System.currentTimeMillis();
     	int visitCount = 0;
     	
 		PriorityQueue<Node> open = new PriorityQueue<Node>(20, (Node current, Node next)-> (current.getPathCost() + current.getHeuristic(goal)) - (next.getPathCost() + next.getHeuristic(goal)));
 		java.util.List<Node> closed = new ArrayList<Node>();
+		path = new LinkedList<>();
     	   	
 		open.offer(node);
 		node.setPathCost(0);		
@@ -30,19 +39,19 @@ public class AStarTraversator implements Traversator{
 			
 			if (node.isGoalNode()){
 		        time = System.currentTimeMillis() - time; //Stop the clock
-		        TraversatorStats.printStats(node, time, visitCount);
+		        //TraversatorStats.printStats(node, time, visitCount);
 				break;
 			}
 			
-			try { //Simulate processing each expanded node
-				Thread.sleep(1000);
+			/*try { //Simulate processing each expanded node
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
 			
 			//Process adjacent nodes
-			//Node[] children = node.children(maze);
 			Node[] children = node.adjacentNodes(maze);
+			
 			for (int i = 0; i < children.length; i++) {
 				Node child = children[i];
 				int score = node.getPathCost() + 1 + child.getHeuristic(goal);
@@ -50,7 +59,7 @@ public class AStarTraversator implements Traversator{
 				
 				if ((open.contains(child) || closed.contains(child)) && existing < score){
 					try {
-						sprite.moveSprite(child.getRow(), child.getCol());
+						nsprite.moveSprite(child.getRow(), child.getCol());
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -63,7 +72,20 @@ public class AStarTraversator implements Traversator{
 					child.setPathCost(node.getPathCost() + 1);
 					open.add(child);
 				}
-			}									
+			}				
+			
 		}
+		
+		path.addFirst(closed.get(1));
+		fullPath = closed;
+	}
+
+	//@Override
+	public Node getNextNode() {
+		return path.getFirst();
+	}
+	
+	public List<Node> getPath(){
+		return fullPath;
 	}
 }

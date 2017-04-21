@@ -6,6 +6,8 @@ import ie.gmit.sw.ai.Node;
 import ie.gmit.sw.ai.Player;
 import ie.gmit.sw.ai.fuzzy.EngageFuzzy;
 import ie.gmit.sw.ai.nn.EngageNN;
+import ie.gmit.sw.ai.traversers.AStarTraversator;
+import ie.gmit.sw.ai.traversers.RecursiveDFSTraversator;
 
 public class NeuralSprite extends Sprite implements Runnable{
 	
@@ -19,6 +21,9 @@ public class NeuralSprite extends Sprite implements Runnable{
 	private int bomb = 0;
 	private int strength = 50;
 	private int id;
+	
+	private Node temp = null;
+	
 	public NeuralSprite(String name, String... images) throws Exception{
 		super(name, images);
 		
@@ -37,23 +42,16 @@ public class NeuralSprite extends Sprite implements Runnable{
 	public void run() {
 		
 		System.out.println("neural sprite running");
-//		if(player == null)
-//			System.out.println("player is null");
-//		else
-//			System.out.println("non null");
-//		DepthLimitedDFSTraversator dt = new DepthLimitedDFSTraversator(10, this, player);
-//		
-//		dt.traverse(maze, maze[row][col]);
 		
-//		AStarTraversator astar = new AStarTraversator(maze[player.getRow()][player.getCol()], this);
-//		astar.traverse(maze,  maze[row][col]);
+		RecursiveDFSTraversator rdfs = new RecursiveDFSTraversator();
+		rdfs.traverse(maze, maze[row][col], this);
 	}
 	
 	public void moveSprite(int newX, int newY) throws InterruptedException {
 		if (maze[newX][newY].getNodeType() != '0') {
 			//maze[this.row][this.col].setNodeType(NodeType.WalkableNode);
 			maze[this.row][this.col].setNodeType('\u0020');
-			maze[newX][newY].setNodeType('\u0036');
+			maze[newX][newY].setNodeType('\u0037');
 			this.row = newX;
 			this.col = newY;
 			//System.out.println("row : " + x);
@@ -90,7 +88,7 @@ public class NeuralSprite extends Sprite implements Runnable{
 			else if (action == 3){
 				System.out.println("hide");
 				maze[this.row][this.col].setNodeType('\u0020');
-				maze[row + 1][row + 1].setNodeType('\u0037');
+				maze[row + 1][col].setNodeType('\u0037');
 				this.row = row + 1;
 				this.col = row + 1;
 			}

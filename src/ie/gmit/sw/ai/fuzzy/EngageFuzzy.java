@@ -34,6 +34,7 @@ public class EngageFuzzy {
         playerHealth -=  damage;
         
         System.out.println("new Player Health: " + playerHealth);
+
 		return playerHealth;
        } 
 	
