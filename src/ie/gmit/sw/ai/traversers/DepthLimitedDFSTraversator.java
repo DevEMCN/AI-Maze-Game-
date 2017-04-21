@@ -63,7 +63,7 @@ public class DepthLimitedDFSTraversator implements Traversator{
 							sprite.moveSprite(node.getRow(), node.getCol());
 						}
 						else
-							Thread.currentThread().stop();
+							//Thread.currentThread().stop();
 							break;
 					}
 				} catch (InterruptedException e) {

@@ -17,7 +17,7 @@ public class Maze {
 	private List<FuzzySprite> fsprites = new ArrayList<>();	
 	private List<NeuralSprite> nsprites = new ArrayList<>();
 	private Node Goal;
-	private ExecutorService ex = Executors.newCachedThreadPool();
+	private ExecutorService ex = Executors.newFixedThreadPool(100);
 	
 	
 	public Maze(int dimension, Player player){
@@ -29,7 +29,7 @@ public class Maze {
 		buildMaze();
 		setGoal();
 		
-		int featureNumber = 20;
+		int featureNumber = 1;
 		addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
 		addFeature('\u0032', '0', featureNumber); //2 is help, 0 is a hedge
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
@@ -74,12 +74,12 @@ public class Maze {
 //					else
 //						System.out.println("null");
 //					//System.out.println("testing " + nodeMaze[row][col]);
-					if(number > 1 && maze[row][col].getNodeType() == '\u0036'){
+					if(number > 19 && maze[row][col].getNodeType() == '\u0036'){
 						FuzzySprite fsprite = new FuzzySprite(maze, player, row, col, 25, counter);
 						fsprites.add(fsprite);
 						ex.execute(fsprite);
 					}
-					else if(number > 1 && maze[row][col].getNodeType() == '\u0037'){
+					else if(number > 19 && maze[row][col].getNodeType() == '\u0037'){
 						System.out.println("called");
 						NeuralSprite nsprite = new NeuralSprite(maze, player, row, col, 25, counter);
 						nsprites.add(nsprite);
