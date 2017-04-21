@@ -6,8 +6,9 @@ public class Player {
 	private int col;
 	private int hbombs = 0;
 	private int bombs = 0;
-	private double health = 0.0;
+	private double health = 100;
 	private int sword = 0;
+	private double swordStrength = 0;
 	
 	
 	public int getRow() {
@@ -18,7 +19,6 @@ public class Player {
 		this.row = row;
 	}
 
-	
 	
 	public int getCol() {
 		return col;
@@ -63,5 +63,13 @@ public class Player {
 
 	public void setHealth(double health) {
 		this.health = health;
+	}
+
+	public double getSwordStrength() {
+		return swordStrength;
+	}
+
+	public void setSwordStrength(double swordStrength) {
+		this.swordStrength = swordStrength;
 	}
 }

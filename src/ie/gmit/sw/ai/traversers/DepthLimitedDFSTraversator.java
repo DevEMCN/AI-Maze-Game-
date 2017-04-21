@@ -40,7 +40,7 @@ public class DepthLimitedDFSTraversator implements Traversator{
 		}
 		
 		try { //Simulate processing each expanded node
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -58,7 +58,12 @@ public class DepthLimitedDFSTraversator implements Traversator{
 				try {
 					//System.out.println("prev: " + previousNode.getRow() + " " + previousNode.getCol());
 					//System.out.println("new: " + node.getRow() + " " + node.getCol());
+					if(sprite.getId() != -1){
+						System.out.println(sprite.getId());
 					sprite.moveSprite(node.getRow(), node.getCol());
+					}
+					else
+						break;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

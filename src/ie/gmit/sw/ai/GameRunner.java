@@ -19,8 +19,8 @@ public class GameRunner implements KeyListener{
 	private int currentRow;
 	private int currentCol;
 	
-	//private ExecutorService ex = Executors.newFixedThreadPool(100);
 	private Player player;
+	private FuzzySprite sprite;
 	
 	public GameRunner() throws Exception{
 		currentRow = (int) (MAZE_DIMENSION * Math.random());
@@ -94,6 +94,7 @@ public class GameRunner implements KeyListener{
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0031')){
 			model.getMaze()[row][col].setNodeType('0');
 			player.addSword();
+			player.setSwordStrength(20);
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0032')){
@@ -109,6 +110,26 @@ public class GameRunner implements KeyListener{
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0034')){
 			model.getMaze()[row][col].setNodeType('0');
 			player.addHbomb();
+			return false;
+		}
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0036')){
+			
+			sprite = model.getSpriteId(row, col);
+			sprite.engageFuzzy();
+			if(player.getHealth() > 0){
+				sprite.setId(-1);
+				model.set(currentRow, currentCol, '\u0020');
+				model.set(row, col, '0');
+			}
+			else{
+				// end game ?
+				System.exit(0);
+			}
+			
+			
+			
+			//model.getMaze()[row][col].setNodeType('0');
+			//player.addHbomb();
 			return false;
 		}
 		else{

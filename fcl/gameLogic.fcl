@@ -1,0 +1,42 @@
+FUNCTION_BLOCK gameLogic
+
+	VAR_INPUT 
+			weapon : REAL; 		// player's weapon
+			spider : REAL;	// player's life
+			damage : REAL;   // enemies life
+	END_VAR
+	
+	VAR_OUTPUT 
+			kill : REAL;  	// possibility of kill for player
+	END_VAR
+	
+	FUZZIFY weapon
+			TERM high := (13, 0) (20, 1);
+			TERM mid := trian 5 10 15;
+			TERM low := (0, 1) (5, 0);
+	END_FUZZIFY
+	
+	FUZZIFY spider
+			TERM low := (0, 1) (5, 1) (10, 0);
+			TERM mid := trian 8 15 18;
+			TERM high := (16, 0) (25, 1) (30, 1);
+	END_FUZZIFY
+	
+	DEFUZZIFY damage
+			TERM low := (0, 1) (45, 0);
+			TERM mid := trian 40.0 70.0 80.0; 
+			TERM high := (60, 0) (100, 1); 
+			METHOD : COG;
+			DEFAULT := 0;
+	END_DEFUZZIFY
+	
+	RULEBLOCK No1
+			AND : MIN;
+			ACT : MIN;
+			ACCU : MAX;
+			RULE 1 : IF weapon IS high THEN damage IS low;
+			RULE 2 : IF weapon IS mid OR spider IS NOT low THEN damage IS mid;
+			RULE 3 : IF weapon IS low OR spider IS high THEN damage IS high;
+	END_RULEBLOCK
+
+END_FUNCTION_BLOCK

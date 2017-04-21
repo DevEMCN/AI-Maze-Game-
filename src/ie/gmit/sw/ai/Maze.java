@@ -1,16 +1,22 @@
 package ie.gmit.sw.ai;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ie.gmit.sw.ai.sprites.FuzzySprite;
+import ie.gmit.sw.ai.sprites.Sprite;
 
 public class Maze {
 	//private char[][] maze;
 	private Node[][] maze;
 	private Player player;
-	//private Node[][] nodeMaze;
+	private List<FuzzySprite> sprites = new ArrayList<>();	
+	
 	private ExecutorService ex = Executors.newFixedThreadPool(100);
+	
+	
 	public Maze(int dimension, Player player){
 		//maze = new char[dimension][dimension];
 		maze = new Node[dimension][dimension];
@@ -19,13 +25,13 @@ public class Maze {
 		init();
 		buildMaze();
 		
-		int featureNumber = 30;
+		int featureNumber = 0;
 		addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
 		addFeature('\u0032', '0', featureNumber); //2 is help, 0 is a hedge
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
 		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge
 //		
-		featureNumber = 31;//(int)((dimension * dimension) * 0.01);
+		featureNumber = 1;//(int)((dimension * dimension) * 0.01);
 		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
 //		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
 //		addFeature('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
@@ -63,8 +69,10 @@ public class Maze {
 //					else
 //						System.out.println("null");
 //					//System.out.println("testing " + nodeMaze[row][col]);
-					if(number > 30){
-						ex.execute(new FuzzySprite(maze, player, row, col));
+					if(number > 0){
+						FuzzySprite sprite = new FuzzySprite(maze, player, row, col, 25, counter);
+						sprites.add(sprite);
+						ex.execute(sprite);
 					}
 				}
 				counter++;
@@ -123,5 +131,14 @@ public class Maze {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+	
+	public FuzzySprite getSpriteId(int row, int col){
+		for(FuzzySprite s : sprites ){
+			if (maze[row][col].getRow() == row && maze[row][col].getCol() == col){
+				return s;
+			}
+		}
+		return null;
 	}
 }

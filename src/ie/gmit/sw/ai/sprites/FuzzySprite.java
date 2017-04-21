@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 
 import ie.gmit.sw.ai.Node;
 import ie.gmit.sw.ai.Player;
+import ie.gmit.sw.ai.fuzzy.EngageFuzzy;
 import ie.gmit.sw.ai.traversers.AStarTraversator;
 import ie.gmit.sw.ai.traversers.DepthLimitedDFSTraversator;
 
@@ -14,18 +15,22 @@ public class FuzzySprite extends Sprite implements Runnable{
 	private Node[][] maze;
 	private int row;
 	private int col;
-	//private Object lock;
+	private double strength;
+	private int id;
+	
 	public FuzzySprite(String name, String... images) throws Exception{
 		super(name, images);
 		
 	}
 	
-	public FuzzySprite(Node[][] maze, Player player, int row, int col){
+	public FuzzySprite(Node[][] maze, Player player, int row, int col, double strength, int id){
 		super();
 		this.player = player;
 		this.maze = maze;
 		this.row = row;
 		this.col = col;
+		this.strength = strength;
+		this.setId(id);
 	}
 
 	@Override
@@ -55,5 +60,19 @@ public class FuzzySprite extends Sprite implements Runnable{
 			
 		}
 		
+	}
+	
+	public void engageFuzzy(){
+		EngageFuzzy ef = new EngageFuzzy();
+		player.setHealth(ef.fight(player.getSwordStrength(), player.getHealth(), this.strength));
+		
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
