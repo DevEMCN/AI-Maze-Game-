@@ -9,6 +9,8 @@ public class Player {
 	private double health = 100;
 	private int sword = 0;
 	private double swordStrength = 0;
+	private double bombStrength = 20;
+	private double hbombStrength = 30;
 	
 	
 	public int getRow() {
@@ -71,5 +73,21 @@ public class Player {
 
 	public void setSwordStrength(double swordStrength) {
 		this.swordStrength = swordStrength;
+	}
+
+	public double getBombStrength() {
+		return bombStrength;
+	}
+
+	public void setBombStrength(double bombStrength) {
+		this.bombStrength = bombStrength;
+	}
+
+	public double getHbombStrength() {
+		return hbombStrength;
+	}
+
+	public void setHbombStrength(double hbombStrength) {
+		this.hbombStrength = hbombStrength;
 	}
 }

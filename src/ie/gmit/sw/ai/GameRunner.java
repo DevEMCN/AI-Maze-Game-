@@ -22,6 +22,8 @@ public class GameRunner implements KeyListener{
 	private Player player;
 	private FuzzySprite sprite;
 	
+	JLabel healthBar;
+	
 	public GameRunner() throws Exception{
 		currentRow = (int) (MAZE_DIMENSION * Math.random());
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
@@ -40,16 +42,24 @@ public class GameRunner implements KeyListener{
     	view.setMinimumSize(d);
     	view.setMaximumSize(d);
     	
+    	
+    	JPanel panel = new JPanel();
+        healthBar = new JLabel("Healh Status: " + player.getHealth());
+        panel.add(healthBar);
+        	
     	JFrame f = new JFrame("GMIT - B.Sc. in Computing (Software Development)");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.addKeyListener(this);
         f.getContentPane().setLayout(new FlowLayout());
+        view.add(panel);
         f.add(view);
         f.setSize(1000,1000);
         f.setLocation(100,100);
         f.pack();
         f.setVisible(true);
 	}
+        
+        
 	
 	private void placePlayer(){   	
 //    	currentRow = (int) (MAZE_DIMENSION * Math.random());
@@ -119,17 +129,29 @@ public class GameRunner implements KeyListener{
 			if(player.getHealth() > 0){
 				sprite.setId(-1);
 				model.set(currentRow, currentCol, '\u0020');
-				model.set(row, col, '0');
+				model.set(row, col, '\u0020');
+				healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
 			}
 			else{
 				// end game ?
 				System.exit(0);
 			}
-			
-			
-			
-			//model.getMaze()[row][col].setNodeType('0');
-			//player.addHbomb();
+			return false;
+		}
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0036'))
+		{
+			sprite = model.getSpriteId(row, col);
+			//sprite.engageFuzzy();
+			if(player.getHealth() > 0){
+				sprite.setId(-1);
+				model.set(currentRow, currentCol, '\u0020');
+				model.set(row, col, '\u0020');
+				healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
+			}
+			else{
+				// end game ?
+				System.exit(0);
+			}
 			return false;
 		}
 		else{

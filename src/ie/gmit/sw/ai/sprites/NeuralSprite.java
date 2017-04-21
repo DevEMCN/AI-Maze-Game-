@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 
 import ie.gmit.sw.ai.Node;
 import ie.gmit.sw.ai.Player;
+import ie.gmit.sw.ai.nn.EngageNN;
 import ie.gmit.sw.ai.traversers.DepthLimitedDFSTraversator;
 
 public class NeuralSprite extends Sprite implements Runnable{
@@ -14,6 +15,9 @@ public class NeuralSprite extends Sprite implements Runnable{
 	private Node[][] maze;
 	private int row;
 	private int col;
+	private double strength;
+	
+	
 	public NeuralSprite(String name, String... images) throws Exception{
 		super(name, images);
 		
@@ -52,6 +56,17 @@ public class NeuralSprite extends Sprite implements Runnable{
 			this.col = newY;
 			//System.out.println("row : " + x);
 			
+		}
+		
+	}
+	
+	public void engageNN(){
+		EngageNN enn = new EngageNN();
+		try {
+			player.setHealth(enn.action(player.getHealth(), player.getSwordStrength(),player.getHbombStrength(), 1.0));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

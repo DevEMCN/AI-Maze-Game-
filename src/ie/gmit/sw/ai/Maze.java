@@ -31,7 +31,7 @@ public class Maze {
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
 		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge
 //		
-		featureNumber = 1;//(int)((dimension * dimension) * 0.01);
+		featureNumber = 2;//(int)((dimension * dimension) * 0.01);
 		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
 //		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
 //		addFeature('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
@@ -69,7 +69,7 @@ public class Maze {
 //					else
 //						System.out.println("null");
 //					//System.out.println("testing " + nodeMaze[row][col]);
-					if(number > 0){
+					if(number > 1){
 						FuzzySprite sprite = new FuzzySprite(maze, player, row, col, 25, counter);
 						sprites.add(sprite);
 						ex.execute(sprite);
