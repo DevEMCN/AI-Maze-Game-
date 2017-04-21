@@ -2,6 +2,7 @@ package ie.gmit.sw.ai;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +16,7 @@ public class Maze {
 	private Player player;
 	private List<FuzzySprite> fsprites = new ArrayList<>();	
 	private List<NeuralSprite> nsprites = new ArrayList<>();
-	
+	private Node Goal;
 	private ExecutorService ex = Executors.newCachedThreadPool();
 	
 	
@@ -26,6 +27,7 @@ public class Maze {
 		this.player = player;
 		init();
 		buildMaze();
+		setGoal();
 		
 		int featureNumber = 20;
 		addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
@@ -55,6 +57,7 @@ public class Maze {
 			}
 		}
 	}
+	
 	
 	private void addFeature(char feature, char replace, int number){
 		int counter = 0;
@@ -86,6 +89,25 @@ public class Maze {
 				counter++;
 			}
 		}
+	}
+	public void setGoal() {
+		Random ran = new Random();
+		for (int i = 0; i < 1; i++) {
+			int currentRow = ran.nextInt(50);
+			int currentCol = ran.nextInt(50);
+			while(maze[currentRow][currentCol].getNodeType()!='\u0020' || maze[currentRow][currentCol].getNodeType()=='5'){
+				 currentRow = ran.nextInt(50);
+				 currentCol = ran.nextInt(50);
+			}
+		
+			this.getMaze()[currentRow][currentCol].setNodeType('\u003E');
+			Goal = this.getMaze()[currentRow][currentCol];
+			System.out.println("gn: "+Goal);
+		}
+	}
+
+	public Node getGoal() {
+		return Goal;
 	}
 	
 	

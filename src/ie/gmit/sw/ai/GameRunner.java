@@ -12,7 +12,7 @@ import ie.gmit.sw.ai.sprites.NeuralSprite;
 import ie.gmit.sw.ai.sprites.Sprite;
 public class GameRunner implements KeyListener{
 	private static final int MAZE_DIMENSION = 50;
-	private static final int IMAGE_COUNT = 14;
+	private static final int IMAGE_COUNT = 15;
 	private GameView view;
 	private Maze model;
 	//private Node[][] maze;
@@ -56,15 +56,10 @@ public class GameRunner implements KeyListener{
         f.setSize(1000,1000);
         f.setLocation(100,100);
         f.setVisible(true);
-        endGame();
+        
 	}
         
-        private void endGame(){
-        	panelEnd.setBackground(Color.BLUE);
-            panelEnd.setBounds(0, 0, 600, 400);
-            panelEnd.setOpaque(true);
-            lpane.add(panelEnd, new Integer(0), 0);
-        }
+        
 	
 	private void placePlayer(){   	
 //    	currentRow = (int) (MAZE_DIMENSION * Math.random());
@@ -186,6 +181,7 @@ public class GameRunner implements KeyListener{
 		sprites[11] = new NeuralSprite("Orange Spider", "resources/orange_spider_1.png", "resources/orange_spider_2.png");
 		sprites[12] = new NeuralSprite("Red Spider", "resources/red_spider_1.png", "resources/red_spider_2.png");
 		sprites[13] = new NeuralSprite("Yellow Spider", "resources/yellow_spider_1.png", "resources/yellow_spider_2.png");
+		sprites[14] = new ItemSprite("End Goal", "resources/EndGame.png");
 		return sprites;
 	}
 	
