@@ -8,7 +8,6 @@ import java.util.concurrent.Executors;
 
 import ie.gmit.sw.ai.sprites.FuzzySprite;
 import ie.gmit.sw.ai.sprites.NeuralSprite;
-import ie.gmit.sw.ai.sprites.Sprite;
 
 public class Maze {
 	//private char[][] maze;
