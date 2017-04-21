@@ -2,8 +2,7 @@ package ie.gmit.sw.ai;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 import javax.swing.*;
 
@@ -94,7 +93,7 @@ public class GameRunner implements KeyListener{
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0031')){
 			model.getMaze()[row][col].setNodeType('0');
-			//model.set(currentRow, currentCol, '0');
+			player.addSword();
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0032')){
@@ -104,7 +103,7 @@ public class GameRunner implements KeyListener{
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0033')){
 			model.getMaze()[row][col].setNodeType('0');
-			//model.set(currentRow, currentCol, '0');
+			player.addBombs();
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0034')){
