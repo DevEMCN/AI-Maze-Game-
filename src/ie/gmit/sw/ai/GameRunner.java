@@ -27,7 +27,7 @@ public class GameRunner implements KeyListener{
 		currentRow = (int) (MAZE_DIMENSION * Math.random());
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
 		player = new Player(currentRow, currentCol);
-		System.out.println("player col: " + player.getCol());
+		//System.out.println("player col: " + player.getCol());
 		model = new Maze(MAZE_DIMENSION, player);
     	view = new GameView(model);
     	placePlayer();
@@ -91,7 +91,28 @@ public class GameRunner implements KeyListener{
 			//System.out.println(player.getCol());
 			model.set(row, col, '5');
 			return true;
-		}else{
+		}
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0031')){
+			model.getMaze()[row][col].setNodeType('0');
+			//model.set(currentRow, currentCol, '0');
+			return false;
+		}
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0032')){
+			model.getMaze()[row][col].setNodeType('0');
+			//model.set(currentRow, currentCol, '0');
+			return false;
+		}
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0033')){
+			model.getMaze()[row][col].setNodeType('0');
+			//model.set(currentRow, currentCol, '0');
+			return false;
+		}
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0034')){
+			model.getMaze()[row][col].setNodeType('0');
+			player.addHbomb();
+			return false;
+		}
+		else{
 			return false; //Can't move
 		}
 	}

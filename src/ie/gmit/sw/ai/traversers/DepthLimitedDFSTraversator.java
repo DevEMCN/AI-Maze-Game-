@@ -10,11 +10,12 @@ public class DepthLimitedDFSTraversator implements Traversator{
 	private long time = System.currentTimeMillis();
 	private int visitCount = 0;
 	private FuzzySprite sprite;
-	private Node previousNode;
+	private Player player;
 	
-	public DepthLimitedDFSTraversator(int limit, FuzzySprite sprite){
+	public DepthLimitedDFSTraversator(int limit, FuzzySprite sprite, Player player){
 		this.limit = limit;
 		this.sprite = sprite;
+		this.player = player;
 	
 	}
 	

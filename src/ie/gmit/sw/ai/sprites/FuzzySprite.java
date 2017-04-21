@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 
 import ie.gmit.sw.ai.Node;
 import ie.gmit.sw.ai.Player;
+import ie.gmit.sw.ai.traversers.AStarTraversator;
 import ie.gmit.sw.ai.traversers.DepthLimitedDFSTraversator;
 
 public class FuzzySprite extends Sprite implements Runnable{
@@ -35,9 +36,12 @@ public class FuzzySprite extends Sprite implements Runnable{
 //			System.out.println("player is null");
 //		else
 //			System.out.println("non null");
-		DepthLimitedDFSTraversator dt = new DepthLimitedDFSTraversator(200, this);
+		DepthLimitedDFSTraversator dt = new DepthLimitedDFSTraversator(10, this, player);
 		
 		dt.traverse(maze, maze[row][col]);
+		
+//		AStarTraversator astar = new AStarTraversator(maze[player.getRow()][player.getCol()], this);
+//		astar.traverse(maze,  maze[row][col]);
 	}
 	
 	public void moveSprite(int newX, int newY) throws InterruptedException {
@@ -48,6 +52,7 @@ public class FuzzySprite extends Sprite implements Runnable{
 			this.row = newX;
 			this.col = newY;
 			//System.out.println("row : " + x);
+			
 		}
 		
 	}
