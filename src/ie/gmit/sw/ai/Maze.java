@@ -28,6 +28,7 @@ public class Maze {
 		init();
 		buildMaze();
 		setGoal();
+		buildPath();
 		
 		int featureNumber = 20;
 		addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
@@ -109,7 +110,33 @@ public class Maze {
 	public Node getGoal() {
 		return Goal;
 	}
-	
+	private void buildPath() { 
+		for (int row = 0; row < maze.length; row++) {
+			for (int col = 0; col < maze[row].length; col++) {
+				if (col < maze[row].length - 1) {
+					if (maze[row][col + 1].getNodeType() == '\u0020') {
+						maze[row][col].addPath(Node.Direction.West);
+					}
+				}
+				if (col > 0) {
+					if (maze[row][col - 1].getNodeType() == '\u0020') {
+						maze[row][col].addPath(Node.Direction.East);
+					}
+				}
+				if (row < maze.length - 1) {
+					if (maze[row + 1][col].getNodeType() == '\u0020') {
+						maze[row][col].addPath(Node.Direction.North);
+					}
+				}
+				if (row > 0) {
+					if (maze[row - 1][col].getNodeType() == '\u0020') {
+						maze[row][col].addPath(Node.Direction.South);
+					}
+				}
+			}
+		}
+
+	}
 	
 	private void buildMaze(){ 
 		for (int row = 1; row < maze.length - 1; row++){

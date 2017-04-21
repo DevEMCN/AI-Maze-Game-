@@ -2,6 +2,8 @@ package ie.gmit.sw.ai;
 
 import java.awt.Color;
 import java.util.Iterator;
+
+import ie.gmit.sw.ai.Node.Direction;
 public class Node {
 	public enum Direction {North, South, East, West};
 	private Node parent;
@@ -55,12 +57,17 @@ public class Node {
 
 	
 	public boolean hasDirection(Direction direction){	
-		for (int i = 0; i < paths.length; i++) {
-			if (paths[i] == direction) return true;
+		if (paths == null){
+			return false;
+		}else if(paths!=null){
+			if(paths.length>0){
+				for (int i = 0; i < paths.length; i++) {
+					if (paths[i] == direction) return true;
+				}
+			}
 		}
 		return false;
 	}
-	
 	public Node[] children(Node[][] maze){		
 		java.util.List<Node> children = new java.util.ArrayList<Node>();
 				
