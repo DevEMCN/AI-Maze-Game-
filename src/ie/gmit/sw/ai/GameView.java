@@ -80,12 +80,18 @@ public class GameView extends JPanel implements ActionListener{
         		
         		imageIndex = (int) ch;
         		imageIndex -= offset;
-        		if (imageIndex < 0){
-        			g2.setColor(Color.LIGHT_GRAY);//Empty cell
-        			g2.fillRect(x1, y1, size, size);   			
-        		}else{
+        		if (imageIndex >= 0){
         			g2.drawImage(sprites[imageIndex].getNext(), x1, y1, null);
-        		}
+        			  			
+        		}else{
+        			if(maze.get(row, col).isVisited() && !maze.get(row, col).isGoalNode()) {
+						g2.setColor(maze.get(row, col).getColor());
+						g2.fillRect(x1, y1, size, size);
+        				
+        			}else{
+        				g2.setColor(Color.LIGHT_GRAY);//Empty cell
+            			g2.fillRect(x1, y1, size, size);  
+        			}        		}	
         	}
         }
 	}

@@ -10,15 +10,17 @@ import ie.gmit.sw.ai.sprites.FuzzySprite;
 import ie.gmit.sw.ai.sprites.ItemSprite;
 import ie.gmit.sw.ai.sprites.NeuralSprite;
 import ie.gmit.sw.ai.sprites.Sprite;
+import ie.gmit.sw.ai.traversers.AStarTraversator;
+import ie.gmit.sw.ai.traversers.Traversator;
+import ie.gmit.sw.ai.traversers.TraversatorStats;
 public class GameRunner implements KeyListener{
 	private static final int MAZE_DIMENSION = 50;
 	private static final int IMAGE_COUNT = 15;
 	private GameView view;
 	private Maze model;
-	//private Node[][] maze;
+	private Node[][] maze;
 	private int currentRow;
 	private int currentCol;
-	
 	private Player player;
 	private FuzzySprite fsprite;
 	private NeuralSprite nsprite;
@@ -26,15 +28,17 @@ public class GameRunner implements KeyListener{
     private JPanel panel = new JPanel();
     private JPanel panelEnd = new JPanel();	
 	JLabel healthBar;
-	
+	Node goal;	
 	public GameRunner() throws Exception{
 		currentRow = (int) (MAZE_DIMENSION * Math.random());
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
 		player = new Player(currentRow, currentCol);
 		//System.out.println("player col: " + player.getCol());
 		model = new Maze(MAZE_DIMENSION, player);
+		maze = model.getMaze();
     	view = new GameView(model);
     	placePlayer();
+    	goalFinder();
     	Sprite[] sprites = getSprites();
     	view.setSprites(sprites);
     	
@@ -56,7 +60,7 @@ public class GameRunner implements KeyListener{
         f.setSize(1000,1000);
         f.setLocation(100,100);
         f.setVisible(true);
-        
+        endNode();
 	}
         
         
@@ -66,6 +70,11 @@ public class GameRunner implements KeyListener{
 //    	currentCol = (int) (MAZE_DIMENSION * Math.random());
     	model.set(currentRow, currentCol, '5'); //A Spartan warrior is at index 5
     	updateView(); 		
+	}
+
+	private void endNode(){   	
+		this.goal = model.getGoal();
+		this.goal.setGoalNode(true);
 	}
 	
 	private void updateView(){
@@ -92,6 +101,31 @@ public class GameRunner implements KeyListener{
     }
     public void keyReleased(KeyEvent e) {} //Ignore
 	public void keyTyped(KeyEvent e) {} //Ignore
+	private void pathUpdate() {
+		goal = model.getGoal();
+		AStarTraversator update = new AStarTraversator(goal);
+		update.traverse(maze, maze[currentRow][currentCol]);
+
+	}
+	private void goalFinder() throws InterruptedException {
+		int checker = (int) TraversatorStats.depth;
+		if (checker == 0) {
+			
+			//goal.setNodeType('\');
+		}
+		while (checker < 20) {
+			//goal.setNodeType('\u0020');
+			goal = model.getGoal();
+			System.out.println("recalculating the path...");
+			Traversator playerPath = new AStarTraversator(goal);
+			playerPath.traverse(maze, maze[player.getRow()][player.getCol()]);
+			System.out.println("finished calculating...");
+			checker = (int) TraversatorStats.depth;
+			if (checker > 20) {
+				break;
+			}
+		}
+	}
 
     
 	private boolean isValidMove(int row, int col){
@@ -99,28 +133,33 @@ public class GameRunner implements KeyListener{
 			model.set(currentRow, currentCol, '\u0020');
 			//System.out.println(player.getCol());
 			model.set(row, col, '5');
+			pathUpdate();
 			return true;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0031')){
 			model.getMaze()[row][col].setNodeType('0');
 			player.addSword();
 			player.setSwordStrength(20);
+			pathUpdate();
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0032')){
 			model.getMaze()[row][col].setNodeType('0');
 			player.setHealth(player.getHealth()+25);
 			healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
+			pathUpdate();
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0033')){
 			model.getMaze()[row][col].setNodeType('0');
 			player.addBombs();
+			pathUpdate();
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0034')){
 			model.getMaze()[row][col].setNodeType('0');
 			player.addHbomb();
+			pathUpdate();
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0036')){
@@ -139,6 +178,7 @@ public class GameRunner implements KeyListener{
 				// end game ?
 				System.exit(0);
 			}
+			pathUpdate();
 			return false;
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0037'))
@@ -155,6 +195,7 @@ public class GameRunner implements KeyListener{
 //				// end game ?
 //				System.exit(0);
 //			}
+			pathUpdate();
 			return false;
 		}
 		else{
