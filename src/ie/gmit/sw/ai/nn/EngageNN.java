@@ -42,7 +42,8 @@ public void runAway(){
 public int action(double health, double sword, double bomb, double enemies) throws Exception{
 
     double[] params = {health, sword, bomb, enemies};
-
+    int action = 0;
+    
     NeuralNetwork nn = new NeuralNetwork(Activator.ActivationFunction.Sigmoid, 4, 3, 4);
     Trainator trainer = new BackpropagationTrainer(nn);
     trainer.train(data, expected, 0.01, 100000);
@@ -60,32 +61,36 @@ public int action(double health, double sword, double bomb, double enemies) thro
     switch(output){
         case 1:
             panic();
+            action = 1;
             break;
         case 2:
             attack();
+            action = 2;
             break;
         case 3:
             hide();
+            action = 3;
             break;
         default:
             runAway();
+            action = 4;
     }
-    
-    return 0;
+    System.out.println("action: " + action);
+    return action;
 }
 	
-	public static void main(String[] args) throws Exception{
-	    double health = 2;
-	    double sword = 1;
-	    double gun = 0;
-	    double enemies = 2;
-	    double[] v = {1, 2, 3, enemies};
-	
-	    double[] result = null;
-	
-	    result = Utils.normalize(v, 0.0, 2.0);
-	
-	    System.out.println(result[0]);
-	    new EngageNN().action(health, sword, gun, result[0]);
-	}
+//	public static void main(String[] args) throws Exception{
+//	    double health = 2;
+//	    double sword = 1;
+//	    double gun = 0;
+//	    double enemies = 2;
+//	    double[] v = {1, 2, 3, enemies};
+//	
+//	    double[] result = null;
+//	
+//	    result = Utils.normalize(v, 0.0, 2.0);
+//	
+//	    System.out.println(result[0]);
+//	    new EngageNN().action(health, sword, gun, result[0]);
+//	}
 }

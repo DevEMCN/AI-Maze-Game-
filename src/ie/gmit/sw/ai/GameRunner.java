@@ -20,7 +20,8 @@ public class GameRunner implements KeyListener{
 	private int currentCol;
 	
 	private Player player;
-	private FuzzySprite sprite;
+	private FuzzySprite fsprite;
+	private NeuralSprite nsprite;
 	
 	JLabel healthBar;
 	
@@ -124,10 +125,10 @@ public class GameRunner implements KeyListener{
 		}
 		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0036')){
 			
-			sprite = model.getSpriteId(row, col);
-			sprite.engageFuzzy();
+			fsprite = model.getFuzzySprite(row, col);
+			fsprite.engageFuzzy();
 			if(player.getHealth() > 0){
-				sprite.setId(-1);
+				fsprite.setId(-1);
 				model.set(currentRow, currentCol, '\u0020');
 				model.set(row, col, '\u0020');
 				healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
@@ -138,20 +139,20 @@ public class GameRunner implements KeyListener{
 			}
 			return false;
 		}
-		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0036'))
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getNodeType() == '\u0037'))
 		{
-			sprite = model.getSpriteId(row, col);
-			//sprite.engageFuzzy();
-			if(player.getHealth() > 0){
-				sprite.setId(-1);
-				model.set(currentRow, currentCol, '\u0020');
-				model.set(row, col, '\u0020');
-				healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
-			}
-			else{
-				// end game ?
-				System.exit(0);
-			}
+			nsprite = model.getNeuralSprite(row, col);
+			nsprite.engageNN();
+//			if(player.getHealth() > 0){
+//				nsprite.setId(-1);
+//				model.set(currentRow, currentCol, '\u0020');
+//				model.set(row, col, '\u0020');
+//				healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
+//			}
+//			else{
+//				// end game ?
+//				System.exit(0);
+//			}
 			return false;
 		}
 		else{

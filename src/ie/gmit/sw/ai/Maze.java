@@ -6,13 +6,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ie.gmit.sw.ai.sprites.FuzzySprite;
+import ie.gmit.sw.ai.sprites.NeuralSprite;
 import ie.gmit.sw.ai.sprites.Sprite;
 
 public class Maze {
 	//private char[][] maze;
 	private Node[][] maze;
 	private Player player;
-	private List<FuzzySprite> sprites = new ArrayList<>();	
+	private List<FuzzySprite> fsprites = new ArrayList<>();	
+	private List<NeuralSprite> nsprites = new ArrayList<>();
 	
 	private ExecutorService ex = Executors.newFixedThreadPool(100);
 	
@@ -32,8 +34,8 @@ public class Maze {
 		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge
 //		
 		featureNumber = 2;//(int)((dimension * dimension) * 0.01);
-		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
-//		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
+//		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
+		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
 //		addFeature('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
 //		addFeature('\u0039', '0', featureNumber); //9 is a Green Spider, 0 is a hedge
 //		addFeature('\u003A', '0', featureNumber); //: is a Grey Spider, 0 is a hedge
@@ -69,10 +71,15 @@ public class Maze {
 //					else
 //						System.out.println("null");
 //					//System.out.println("testing " + nodeMaze[row][col]);
-					if(number > 1){
-						FuzzySprite sprite = new FuzzySprite(maze, player, row, col, 25, counter);
-						sprites.add(sprite);
-						ex.execute(sprite);
+					if(number > 1 && maze[row][col].getNodeType() == '\u0036'){
+						FuzzySprite fsprite = new FuzzySprite(maze, player, row, col, 25, counter);
+						fsprites.add(fsprite);
+						ex.execute(fsprite);
+					}
+					else if(number > 1 && maze[row][col].getNodeType() == '\u0037'){
+						NeuralSprite nsprite = new NeuralSprite(maze, player, row, col, 25, counter);
+						nsprites.add(nsprite);
+						ex.execute(nsprite);
 					}
 				}
 				counter++;
@@ -133,8 +140,17 @@ public class Maze {
 		return sb.toString();
 	}
 	
-	public FuzzySprite getSpriteId(int row, int col){
-		for(FuzzySprite s : sprites ){
+	public FuzzySprite getFuzzySprite(int row, int col){
+		for(FuzzySprite s : fsprites ){
+			if (maze[row][col].getRow() == row && maze[row][col].getCol() == col){
+				return s;
+			}
+		}
+		return null;
+	}
+	
+	public NeuralSprite getNeuralSprite(int row, int col){
+		for(NeuralSprite s : nsprites ){
 			if (maze[row][col].getRow() == row && maze[row][col].getCol() == col){
 				return s;
 			}
